@@ -1,0 +1,253 @@
+<mvc:View controllerName="spm.controller.Main"
+     xmlns:core="sap.ui.core"
+    xmlns:filterbar="sap.ui.comp.filterbar"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
+    xmlns:f='sap.f'
+    xmlns:table='sap.ui.table'
+    xmlns:svm="sap.ui.comp.smartvariants">
+  <Page id="page">
+        <customHeader>
+            <f:ShellBar
+                title="Tổng Quan"
+                showCopilot="true"
+                showSearch="true"
+                showNotifications="true"
+                notificationsNumber="2"
+            />
+        </customHeader>
+
+        <tnt:ToolHeader>
+            <IconTabHeader
+                id="iconTabHeader"
+                selectedKey="invalidKey"
+                backgroundDesign="Transparent"
+                mode="Inline"
+            >
+                <layoutData>
+                    <OverflowToolbarLayoutData
+                        priority="NeverOverflow"
+                        shrinkable="true"
+                    />
+                </layoutData>
+                <items>
+                    <IconTabFilter text="Tổng quan" />
+                    <IconTabFilter text="Quản lý pr" />
+                    <IconTabFilter text="Đơn mua hàng" />
+                    <IconTabFilter text="Nhà cung cấp" />
+                    <IconTabFilter
+                        text="Chấm điểm"
+                        interactionMode="SelectLeavesOnly"
+                    >
+                        <items>
+                            <IconTabFilter text="Tiêu chí chấm điểm" />
+                        </items>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        text="Phòng ban"
+                        interactionMode="SelectLeavesOnly"
+                    >
+                        <items>
+                            <IconTabFilter text="Phòng ban" />
+                        </items>
+                    </IconTabFilter>
+
+                    <IconTabFilter text="Quản lý biểu mẫu" />
+                    <IconTabFilter text="Trò chuyện" />
+                </items>
+            </IconTabHeader>
+        </tnt:ToolHeader>
+        <content>
+            <VBox>
+                <HBox>
+                    <GenericTile
+                        class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                        header="PR"
+                        subheader="Mới đồng bộ"
+                        press="press"
+                        width="300px"
+                    >
+                        <TileContent
+                            unit="Now"
+                            footer="Footer"
+                        >
+                            <NumericContent
+                                value="65.5%"
+                                icon="sap-icon://line-charts"
+                                withMargin="false"
+                                valueColor="Good"
+                            />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile
+                        class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                        header="PR"
+                        subheader="Đã hủy"
+                        press="press"
+                        width="300px"
+                    >
+                        <TileContent
+                            unit="Now"
+                            visible="true"
+                            footer="Footer"
+                        >
+                            <NumericContent
+                                value="65.5%"
+                                icon="sap-icon://line-charts"
+                                withMargin="false"
+                                valueColor="Good"
+                            />
+                        </TileContent>
+                    </GenericTile>
+                </HBox>
+                <ToolbarSpacer />
+                <Label text="Danh sách PR" />
+            </VBox>
+        </content>
+        <f:DynamicPage headerExpanded="{/headerExpanded}">
+           <f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
+					</f:heading>
+					<f:expandedContent>
+						<Label id="expandedLabel" text="No filters active" />
+					</f:expandedContent>
+					<f:snappedContent>
+						<Label id="snappedLabel" text="No filters actives" />
+					</f:snappedContent>
+				</f:DynamicPageTitle>
+			</f:title>
+            <f:header>
+                <f:DynamicPageHeader>
+                    <f:content>
+                        <filterbar:FilterBar
+                            id="filterbar"
+                            persistencyKey="myPersKey"
+                            useToolbar="false"
+                            search=".onSearch"
+                            filterChange=".onFilterChange"
+                            afterVariantLoad=".onAfterVariantLoad"
+                        >
+                            <filterbar:filterGroupItems>
+                                <filterbar:FilterGroupItem
+                                    name="startDate"
+                                    label="Từ ngày"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <filterbar:control>
+                                        <DatePicker
+                                            id="startDate"
+                                            placeholder="startDate"
+                                            change=".onChangeSelect"
+                                        />
+                                    </filterbar:control>
+                                </filterbar:FilterGroupItem>
+                                <filterbar:FilterGroupItem
+                                    name="endDate"
+                                    label="Đến ngày"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <filterbar:control>
+                                        <DatePicker
+                                            id="endDate"
+                                            placeholder="endDate"
+                                            change="onChangeSelect"
+                                        />
+                                    </filterbar:control>
+                                </filterbar:FilterGroupItem>
+
+                                <filterbar:FilterGroupItem
+                                    name="search"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <filterbar:control>
+                                        <SearchField change=".onChangeSelect" />
+                                    </filterbar:control>
+                                </filterbar:FilterGroupItem>
+
+                                <filterbar:FilterGroupItem
+                                    name="DeleteId"
+                                    label="DeleteId"
+                                    groupName="Group1"
+                                    visibleInFilterBar="true"
+                                >
+                                    <filterbar:control>
+                                        <MultiComboBox
+                                            name="DeleteID"
+                                            selectionChange=".onChangeSelect"
+                                            items="{/select}"
+                                        >
+                                            <core:Item
+                                                key="{key}"
+                                                text="{name}"
+                                            />
+                                        </MultiComboBox>
+                                    </filterbar:control>
+                                </filterbar:FilterGroupItem>
+                            </filterbar:filterGroupItems>
+                        </filterbar:FilterBar>
+                    </f:content>
+                </f:DynamicPageHeader>
+            </f:header>
+            <f:content>
+                <table:Table
+                    selectionMode="MultiToggle"
+                    rows="{/dataTable}"
+                    id="table"
+                >
+                    <table:columns>
+                        <table:Column width='11rem'>
+                            <Label text="Mã pr" />
+                            <table:template>
+                                <Text text="{maPR}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="DeleteID" />
+                            <table:template>
+                                <Text text="{DeleteID}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="Số Lượng" />
+                            <table:template>
+                                <Text text="{soLuong}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="Nhà Máy" />
+                            <table:template>
+                                <Text text="{nhaMay}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="Mã PO" />
+                            <table:template>
+                                <Text text="{maPO}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="Detalis" />
+                            <table:template>
+                                <Button text="{Detalis}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column width='11rem'>
+                            <Label text="Ngày cập nhật" />
+                            <table:template>
+                                <Text text="{NgayCapNhat}" />
+                            </table:template>
+                        </table:Column>
+                    </table:columns>
+                </table:Table>
+            </f:content>
+        </f:DynamicPage>
+    </Page>
+</mvc:View>

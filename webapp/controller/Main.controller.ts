@@ -7,7 +7,6 @@ import MessageBox from "sap/m/MessageBox";
 import MultiComboBox from "sap/m/MultiComboBox";
 import SearchField from "sap/m/SearchField";
 import Select from "sap/m/Select";
-import VBox from "sap/m/VBox";
 import { ButtonType, DialogType } from "sap/m/library";
 import FilterBar, {
   FilterBar$FilterChangeEventParameters,
@@ -17,12 +16,12 @@ import PersonalizableInfo from "sap/ui/comp/smartvariants/PersonalizableInfo";
 import SmartVariantManagement from "sap/ui/comp/smartvariants/SmartVariantManagement";
 import DateFormat from "sap/ui/core/format/DateFormat";
 import { ValueState } from "sap/ui/core/library";
+import SimpleForm from "sap/ui/layout/form/SimpleForm";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import Table from "sap/ui/table/Table";
 import { Button$ClickEvent } from "sap/ui/webc/main/Button";
 import { Data, DataFilter, DataTable, Fiter } from "spm/types/filterType";
 import Base from "./Base.controller";
-import SimpleForm from "sap/ui/layout/form/SimpleForm";
 
 /**
  * @namespace spm.controller
@@ -99,38 +98,64 @@ export default class Main extends Base {
       this.getModel().getProperty("/tableData")
     )).slice();
 
-    const maPR = (<Input>this.byId("inputPR")).getValue();
-    const soluong = (<Input>this.byId("inputSl")).getValue();
-    const DeleteID = (<Select>this.byId("DeleteID"))
-      .getSelectedItem()
-      ?.getText();
-    const nhaMay = (<Input>this.byId("inputnhaMay")).getValue();
-    const maPO = (<Input>this.byId("inputMaPO")).getValue();
-    const ngayCapNhat = (<DatePicker>this.byId("ngayCapNhat")).getDateValue();
-    const offset = ngayCapNhat.getTimezoneOffset() * 60000;
-    const localDate = new Date(ngayCapNhat.getTime() - offset);
-    const formattedDate = localDate.toISOString().split("T")[0];
+    const inputPR = <Input>this.byId("inputPR");
+    const inputSl = <Input>this.byId("inputSl");
+    const inputDeleteID = <Select>this.byId("DeleteID");
+    const inputNhaMay = <Input>this.byId("inputnhaMay");
+    const inputMaPO = <Input>this.byId("inputMaPO");
+    const inputNgayCapNhat = <DatePicker>this.byId("ngayCapNhat");
 
-    if (!maPR || !soluong || !nhaMay || !maPO || !ngayCapNhat) {
-      MessageBox.error("Vui lòng điền đầy đủ thông tin.");
+    const maPR = inputPR.getValue();
+    const soluong = inputSl.getValue();
+    const DeleteID = inputDeleteID.getSelectedItem()?.getText();
+    const nhaMay = inputNhaMay.getValue();
+    const maPO = inputMaPO.getValue();
+    const ngayCapNhat = inputNgayCapNhat.getDateValue();
+
+    if (!maPR) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin mã PR.");
       return;
     }
+
+    if (!soluong) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin sô lương.");
+      return;
+    }
+
+    if (!nhaMay) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin nhà máy.");
+      return;
+    }
+
+    if (!maPO) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin mã PO.");
+      return;
+    }
+
+    if (!ngayCapNhat) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin ngày cập nhật.");
+      return;
+    }
+
+    const offset = ngayCapNhat?.getTimezoneOffset() * 60000;
+    const localDate = new Date(ngayCapNhat?.getTime() - offset);
+    const formattedDate = localDate?.toISOString().split("T")[0];
     table.push({
       maPR: maPR,
       DeleteID: DeleteID,
       soLuong: soluong,
       nhaMay: nhaMay,
       maPO: maPO,
-      NgayCapNhat: formattedDate
+      NgayCapNhat: formattedDate,
     });
 
     this.getModel().setProperty("/tableData", table);
-    (<Input>this.byId("inputPR")).setValue("");
-    (<Input>this.byId("inputSl")).setValue("");
-    (<Select>this.byId("DeleteID")).setSelectedKey("");
-    (<Input>this.byId("inputnhaMay")).setValue("");
-    (<Input>this.byId("inputMaPO")).setValue("");
-    (<Input>this.byId("ngayCapNhat")).setValue("");
+    inputPR.setValue("");
+    inputSl.setValue("");
+    inputDeleteID.setSelectedKey("");
+    inputNhaMay.setValue("");
+    inputMaPO.setValue("");
+    inputNgayCapNhat.setValue("");
     this.onCloseDialog();
   }
 
@@ -225,6 +250,7 @@ export default class Main extends Base {
     const rowDelete = <string>(
       event.getSource()?.getBindingContext()?.getProperty("maPR")
     );
+
     MessageBox.information("Are you sure you want to delete?", {
       actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
       emphasizedAction: MessageBox.Action.OK,
@@ -248,6 +274,10 @@ export default class Main extends Base {
   public onDeleteRows() {
     const indexRowSelect = (<Table>this.byId("table")).getSelectedIndices();
     const model = this.getModel();
+    if (!indexRowSelect.length) {
+      MessageBox.warning("No rows have been selected yet!");
+      return;
+    }
     MessageBox.information("Are you sure you want to delete?", {
       actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
       emphasizedAction: MessageBox.Action.OK,

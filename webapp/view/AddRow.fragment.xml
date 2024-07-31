@@ -20,7 +20,6 @@
                     placeholder="Mã PR"
                     required="true"
                 />
-                <Label id="inputPRError" text="" visible="false" class="errorLabel" />
                 <Label text="Delete ID" />
                 <Select
                     id="DeleteID"
@@ -44,7 +43,6 @@
                     required="true"
 
                 />
-                <Label id="inputSlError" text="" visible="false" class="errorLabel" />
                 <Label text="Nhà máy" />
                 <Input
                     id="inputnhaMay"
@@ -52,7 +50,6 @@
                     required="true"
 
                 />
-                 <Label id="inputNhaMayError" text="" visible="false" class="errorLabel" />
                 <Label text="Mã PO" />
                 <Input
                     id="inputMaPO"
@@ -60,7 +57,6 @@
                     required="true"
 
                 />
-                 <Label id="inputMaPOError" text="" visible="false" class="errorLabel" />
                 <Label text="Ngày cập nhật" />
                 <DatePicker
                     id="ngayCapNhat"
@@ -68,7 +64,6 @@
                     required="true"
 
                 />
-                <Label id="ngayCapNhatError" text="" visible="false" class="errorLabel" />
             </form:SimpleForm>
         </content>
         <beginButton>

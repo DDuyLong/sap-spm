@@ -22,6 +22,7 @@ import Table from "sap/ui/table/Table";
 import { Button$ClickEvent } from "sap/ui/webc/main/Button";
 import { Data, DataFilter, DataTable, Fiter } from "spm/types/filterType";
 import Base from "./Base.controller";
+import SimpleForm from "sap/ui/layout/form/SimpleForm";
 
 /**
  * @namespace spm.controller
@@ -117,7 +118,7 @@ export default class Main extends Base {
       soLuong: soluong,
       nhaMay: nhaMay,
       maPO: maPO,
-      NgayCapNhat: ngayCapNhat.toISOString().split("T")[0]
+      NgayCapNhat: ngayCapNhat.toISOString().split("T")[0],
     });
 
     this.getModel().setProperty("/tableData", table);
@@ -140,9 +141,10 @@ export default class Main extends Base {
         title: "",
         state: ValueState.Information,
         draggable: true,
-        content: new VBox({
+        content: new SimpleForm({
           id: "dialogContent",
-          items: [],
+          width: '500px',
+          content: [],
         }),
         beginButton: new Button({
           type: ButtonType.Emphasized,
@@ -154,14 +156,49 @@ export default class Main extends Base {
       });
     }
     this.dialog.setTitle(`Chi tiết PR: ${rowData.maPR}`);
-    const vbox = <VBox>this.dialog.getContent()[0];
-    vbox.removeAllItems();
-    vbox.addItem(new Label({ text: `Mã PR: ${rowData.maPR}` }));
-    vbox.addItem(new Label({ text: `DeleteID: ${rowData.DeleteID}` }));
-    vbox.addItem(new Label({ text: `Số lượng: ${rowData.soLuong}` }));
-    vbox.addItem(new Label({ text: `Nhà máy: ${rowData.nhaMay}` }));
-    vbox.addItem(new Label({ text: `Mã PO: ${rowData.maPO}` }));
-    vbox.addItem(new Label({ text: `Ngày cập nhật: ${rowData.NgayCapNhat}` }));
+    const simpleForm = <SimpleForm>this.dialog.getContent()[0];
+    simpleForm.destroyContent();
+    simpleForm.addContent(new Label({ text: "Mã PR" }));
+    simpleForm.addContent(
+      new Input({
+        value: rowData.maPR,
+      })
+    );
+
+    simpleForm.addContent(new Label({ text: "DeleteID" }));
+    simpleForm.addContent(
+      new Input({
+        value: rowData.DeleteID,
+      })
+    );
+
+    simpleForm.addContent(new Label({ text: "Số lượng" }));
+    simpleForm.addContent(
+      new Input({
+        value: rowData.soLuong,
+      })
+    );
+
+    simpleForm.addContent(new Label({ text: "Nhà máy" }));
+    simpleForm.addContent(
+      new Input({
+        value: rowData.nhaMay,
+      })
+    );
+
+    simpleForm.addContent(new Label({ text: "Mã PO" }));
+    simpleForm.addContent(
+      new Input({
+        value: rowData.maPO,
+      })
+    );
+
+    simpleForm.addContent(new Label({ text: "Ngày cập nhật" }));
+    simpleForm.addContent(
+      new DatePicker({
+        value: rowData.NgayCapNhat,
+      })
+    );
     this.getView()?.addDependent(this.dialog);
     this.dialog.bindElement(path);
     this.dialog.open();

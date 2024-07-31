@@ -28,7 +28,7 @@ export interface DateFilterValue {
 
 export interface DataTable {
   maPR: string;
-  DeleteID: string;
+  DeleteID: string | undefined;
   soLuong: string;
   nhaMay: string;
   maPO: string;

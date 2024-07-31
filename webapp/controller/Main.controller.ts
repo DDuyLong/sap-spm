@@ -107,8 +107,11 @@ export default class Main extends Base {
     const nhaMay = (<Input>this.byId("inputnhaMay")).getValue();
     const maPO = (<Input>this.byId("inputMaPO")).getValue();
     const ngayCapNhat = (<DatePicker>this.byId("ngayCapNhat")).getDateValue();
+    const offset = ngayCapNhat.getTimezoneOffset() * 60000;
+    const localDate = new Date(ngayCapNhat.getTime() - offset);
+    const formattedDate = localDate.toISOString().split("T")[0];
 
-    if (!maPR || !DeleteID || !soluong || !nhaMay || !maPO || !ngayCapNhat) {
+    if (!maPR || !soluong || !nhaMay || !maPO || !ngayCapNhat) {
       MessageBox.error("Vui lòng điền đầy đủ thông tin.");
       return;
     }
@@ -118,10 +121,16 @@ export default class Main extends Base {
       soLuong: soluong,
       nhaMay: nhaMay,
       maPO: maPO,
-      NgayCapNhat: ngayCapNhat.toISOString().split("T")[0],
+      NgayCapNhat: formattedDate
     });
 
     this.getModel().setProperty("/tableData", table);
+    (<Input>this.byId("inputPR")).setValue("");
+    (<Input>this.byId("inputSl")).setValue("");
+    (<Select>this.byId("DeleteID")).setSelectedKey("");
+    (<Input>this.byId("inputnhaMay")).setValue("");
+    (<Input>this.byId("inputMaPO")).setValue("");
+    (<Input>this.byId("ngayCapNhat")).setValue("");
     this.onCloseDialog();
   }
 
@@ -143,7 +152,7 @@ export default class Main extends Base {
         draggable: true,
         content: new SimpleForm({
           id: "dialogContent",
-          width: '500px',
+          width: "500px",
           content: [],
         }),
         beginButton: new Button({

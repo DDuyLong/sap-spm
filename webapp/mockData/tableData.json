@@ -1,0 +1,134 @@
+{
+  "tableData": [
+    {
+      "maPR": "1000559",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02-04-2024"
+    },
+    {
+      "maPR": "1000560",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02/04/2024"
+    },
+    {
+      "maPR": "1000561",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000562",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000563",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000564",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000565",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000566",
+      "DeleteID": "",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000567",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000568",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000569",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000570",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000571",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000572",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02.04.2024"
+    },
+    {
+      "maPR": "1000573",
+      "DeleteID": "x",
+      "soLuong": 1,
+      "nhaMay": "Potoro",
+      "maPO": "366600",
+      "NgayCapNhat": "02/04/2024"
+    }
+  ],
+  "deleteID": [
+    {
+      "key": 1,
+      "value": "x"
+    },
+    {
+      "key": 2,
+      "value": ""
+    }
+  ]
+}

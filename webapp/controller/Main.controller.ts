@@ -1,29 +1,43 @@
+import Button, { Button$PressEvent } from "sap/m/Button";
+import DatePicker from "sap/m/DatePicker";
+import Dialog from "sap/m/Dialog";
+import Input from "sap/m/Input";
 import Label from "sap/m/Label";
-import Table from "sap/m/Table";
-import PersonalizableInfo from "sap/ui/comp/smartvariants/PersonalizableInfo";
-import SmartVariantManagement from "sap/ui/comp/smartvariants/SmartVariantManagement";
-import Base from "./Base.controller";
-import { DataFilter, Fiter } from "spm/types/filterType";
+import MessageBox from "sap/m/MessageBox";
+import MultiComboBox from "sap/m/MultiComboBox";
+import SearchField from "sap/m/SearchField";
+import Select from "sap/m/Select";
+import VBox from "sap/m/VBox";
+import { ButtonType, DialogType } from "sap/m/library";
 import FilterBar, {
   FilterBar$FilterChangeEventParameters,
 } from "sap/ui/comp/filterbar/FilterBar";
-import DatePicker from "sap/m/DatePicker";
-import SearchField from "sap/m/SearchField";
-import MultiComboBox from "sap/m/MultiComboBox";
 import FilterGroupItem from "sap/ui/comp/filterbar/FilterGroupItem";
+import PersonalizableInfo from "sap/ui/comp/smartvariants/PersonalizableInfo";
+import SmartVariantManagement from "sap/ui/comp/smartvariants/SmartVariantManagement";
+import DateFormat from "sap/ui/core/format/DateFormat";
+import { ValueState } from "sap/ui/core/library";
+import JSONModel from "sap/ui/model/json/JSONModel";
+import Table from "sap/ui/table/Table";
+import { Button$ClickEvent } from "sap/ui/webc/main/Button";
+import { Data, DataFilter, DataTable, Fiter } from "spm/types/filterType";
+import Base from "./Base.controller";
 
 /**
  * @namespace spm.controller
  */
+
 export default class Main extends Base {
   private filterBar: FilterBar;
   private table: Table;
   private smartVariantManagement: SmartVariantManagement;
   private expandedLabel: Label;
   private snappedLabel: Label;
+  private dialog: Dialog;
+  private dialogAddRow: Dialog;
 
-  /*eslint-disable @typescript-eslint/no-empty-function*/
   public onInit(): void {
+    this.setModel(this.getData());
     this.smartVariantManagement = <SmartVariantManagement>(
       this.getView()?.byId("svm")
     );
@@ -46,6 +60,167 @@ export default class Main extends Base {
     this.smartVariantManagement.initialise(() => {}, this.filterBar);
   }
 
+  //Table
+  //get data
+  private getData() {
+    const model = new JSONModel();
+    const dateFormat = DateFormat.getDateInstance({ pattern: "dd.MM.yyyy" });
+    fetch(sap.ui.require.toUrl("spm/mockData/tableData.json"))
+      .then((response) => response.json())
+      .then((data: Data) => {
+        const table = data.tableData;
+
+        table.forEach((item: DataTable) => {
+          const parsedDate = new Date(item.NgayCapNhat);
+          if (!isNaN(parsedDate.getTime())) {
+            item.NgayCapNhat = dateFormat.format(parsedDate);
+          }
+        });
+        model.setData({ tableData: data.tableData, deleteID: data.deleteID });
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error(`Error fetching the products: ${error}`);
+      });
+    return model;
+  }
+
+  //add row
+  public async onAddNewRow(): Promise<void> {
+    this.dialogAddRow ??= await (<Promise<Dialog>>this.loadFragment({
+      name: "spm.view.AddRow",
+    }));
+    this.dialogAddRow.open();
+  }
+
+  public onSave(): void {
+    const table = (<DataTable[]>(
+      this.getModel().getProperty("/tableData")
+    )).slice();
+
+    const maPR = (<Input>this.byId("inputPR")).getValue();
+    const soluong = (<Input>this.byId("inputSl")).getValue();
+    const DeleteID = (<Select>this.byId("DeleteID"))
+      .getSelectedItem()
+      ?.getText();
+    const nhaMay = (<Input>this.byId("inputnhaMay")).getValue();
+    const maPO = (<Input>this.byId("inputMaPO")).getValue();
+    const ngayCapNhat = (<DatePicker>this.byId("ngayCapNhat")).getDateValue();
+
+    if (!maPR || !DeleteID || !soluong || !nhaMay || !maPO || !ngayCapNhat) {
+      MessageBox.error("Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+    table.push({
+      maPR: maPR,
+      DeleteID: DeleteID,
+      soLuong: soluong,
+      nhaMay: nhaMay,
+      maPO: maPO,
+      NgayCapNhat: ngayCapNhat.toISOString().split("T")[0]
+    });
+
+    this.getModel().setProperty("/tableData", table);
+    this.onCloseDialog();
+  }
+
+  public onCloseDialog(): void {
+    (<Dialog>this.byId("addRow"))?.close();
+  }
+
+  //Detalis action
+  public handleDetailsPress(event: Button$ClickEvent) {
+    const path = <string>event.getSource().getBindingContext()?.getPath();
+    const rowData = <DataTable>(
+      event.getSource()?.getBindingContext()?.getObject()
+    );
+    if (!this.dialog) {
+      this.dialog = new Dialog({
+        type: DialogType.Message,
+        title: "",
+        state: ValueState.Information,
+        draggable: true,
+        content: new VBox({
+          id: "dialogContent",
+          items: [],
+        }),
+        beginButton: new Button({
+          type: ButtonType.Emphasized,
+          text: "close",
+          press: () => {
+            this.dialog.close();
+          },
+        }),
+      });
+    }
+    this.dialog.setTitle(`Chi tiết PR: ${rowData.maPR}`);
+    const vbox = <VBox>this.dialog.getContent()[0];
+    vbox.removeAllItems();
+    vbox.addItem(new Label({ text: `Mã PR: ${rowData.maPR}` }));
+    vbox.addItem(new Label({ text: `DeleteID: ${rowData.DeleteID}` }));
+    vbox.addItem(new Label({ text: `Số lượng: ${rowData.soLuong}` }));
+    vbox.addItem(new Label({ text: `Nhà máy: ${rowData.nhaMay}` }));
+    vbox.addItem(new Label({ text: `Mã PO: ${rowData.maPO}` }));
+    vbox.addItem(new Label({ text: `Ngày cập nhật: ${rowData.NgayCapNhat}` }));
+    this.getView()?.addDependent(this.dialog);
+    this.dialog.bindElement(path);
+    this.dialog.open();
+  }
+
+  //select row
+  // private onRowSelectionChange() {
+  //   const table = this.byId("table") as Table;
+  //   const index = table.getSelectedIndices();
+  // }
+
+  //Delete Row
+  public onDeleteRow(event: Button$PressEvent) {
+    const model = this.getModel();
+    const rowDelete = <string>(
+      event.getSource()?.getBindingContext()?.getProperty("maPR")
+    );
+    MessageBox.information("Are you sure you want to delete?", {
+      actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+      emphasizedAction: MessageBox.Action.OK,
+      onClose: (action: unknown) => {
+        const dataTable = (<DataTable[]>(
+          model.getProperty("/tableData")
+        )).slice();
+        if (action === MessageBox.Action.OK) {
+          if (rowDelete) {
+            this.getModel()?.setProperty(
+              "/tableData",
+              dataTable.filter((item) => item.maPR !== rowDelete)
+            );
+          }
+        }
+      },
+    });
+  }
+
+  //Delete Rows
+  public onDeleteRows() {
+    const indexRowSelect = (<Table>this.byId("table")).getSelectedIndices();
+    const model = this.getModel();
+    MessageBox.information("Are you sure you want to delete?", {
+      actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+      emphasizedAction: MessageBox.Action.OK,
+      onClose: (action: unknown) => {
+        const dataTable = (<DataTable[]>(
+          model.getProperty("/tableData")
+        )).slice();
+        if (action === MessageBox.Action.OK) {
+          const newTable = dataTable.filter(
+            (acc, indexRox) => !indexRowSelect.includes(indexRox)
+          );
+
+          this.getModel()?.setProperty("/tableData", newTable);
+        }
+      },
+    });
+  }
+
+  //Filter
   public fetchData = (): DataFilter[] => {
     return this.filterBar
       .getAllFilterItems(false)
@@ -160,7 +335,7 @@ export default class Main extends Base {
           inputValues: {},
         }
       );
-    console.log(inputValues);
+    // console.log(inputValues);
   }
 
   //set text

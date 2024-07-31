@@ -18,7 +18,7 @@ export interface Fiter {
 export interface DataFilter {
   groupName: string;
   fieldName: string;
-  fieldData: string | string[] ;
+  fieldData: string | string[];
 }
 
 export interface DateFilterValue {
@@ -26,4 +26,21 @@ export interface DateFilterValue {
   filterItem: Dict;
 }
 
-// export interface
+export interface DataTable {
+  maPR: string;
+  DeleteID: string;
+  soLuong: string;
+  nhaMay: string;
+  maPO: string;
+  NgayCapNhat: string;
+}
+
+export interface DeleteID {
+  key: number;
+  value: string;
+}
+
+export interface Data {
+  tableData: DataTable[];
+  deleteID: DeleteID;
+}

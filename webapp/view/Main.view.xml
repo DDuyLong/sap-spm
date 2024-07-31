@@ -1,5 +1,6 @@
-<mvc:View controllerName="spm.controller.Main"
-     xmlns:core="sap.ui.core"
+<mvc:View
+    controllerName="spm.controller.Main"
+    xmlns:core="sap.ui.core"
     xmlns:filterbar="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -7,8 +8,10 @@
     xmlns:tnt="sap.tnt"
     xmlns:f='sap.f'
     xmlns:table='sap.ui.table'
-    xmlns:svm="sap.ui.comp.smartvariants">
-  <Page id="page">
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+>
+    <Page id="page">
         <customHeader>
             <f:ShellBar
                 title="Tổng Quan"
@@ -60,7 +63,7 @@
             </IconTabHeader>
         </tnt:ToolHeader>
         <content>
-            <VBox>
+            <VBox class="customBackground">
                 <HBox>
                     <GenericTile
                         class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
@@ -104,23 +107,35 @@
                     </GenericTile>
                 </HBox>
                 <ToolbarSpacer />
-                <Label text="Danh sách PR" />
+                <Label
+                    class="sapUiMediumMargin"
+                    text="Danh sách PR"
+                />
             </VBox>
         </content>
         <f:DynamicPage headerExpanded="{/headerExpanded}">
-           <f:title>
-				<f:DynamicPageTitle>
-					<f:heading>
-						<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
-					</f:heading>
-					<f:expandedContent>
-						<Label id="expandedLabel" text="No filters active" />
-					</f:expandedContent>
-					<f:snappedContent>
-						<Label id="snappedLabel" text="No filters actives" />
-					</f:snappedContent>
-				</f:DynamicPageTitle>
-			</f:title>
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <svm:SmartVariantManagement
+                            id="svm"
+                            showExecuteOnSelection="true"
+                        />
+                    </f:heading>
+                    <f:expandedContent>
+                        <Label
+                            id="expandedLabel"
+                            text="No filters active"
+                        />
+                    </f:expandedContent>
+                    <f:snappedContent>
+                        <Label
+                            id="snappedLabel"
+                            text="No filters actives"
+                        />
+                    </f:snappedContent>
+                </f:DynamicPageTitle>
+            </f:title>
             <f:header>
                 <f:DynamicPageHeader>
                     <f:content>
@@ -182,11 +197,11 @@
                                         <MultiComboBox
                                             name="DeleteID"
                                             selectionChange=".onChangeSelect"
-                                            items="{/select}"
+                                            items="{/deleteID}"
                                         >
                                             <core:Item
                                                 key="{key}"
-                                                text="{name}"
+                                                text="{value}"
                                             />
                                         </MultiComboBox>
                                     </filterbar:control>
@@ -199,50 +214,121 @@
             <f:content>
                 <table:Table
                     selectionMode="MultiToggle"
-                    rows="{/dataTable}"
+                    rows="{/tableData}"
+                    paste="onPaste"
                     id="table"
+                    rowSelectionChange="onRowSelectionChange"
                 >
+                    <table:rowMode>
+                        <rowmodes:Fixed rowCount="15" />
+                    </table:rowMode>
+
+                    <table:extension>
+                        <OverflowToolbar height="3rem">
+                            <HBox
+                                width="100%"
+                                justifyContent="SpaceBetween"
+                                alignItems="Center"
+                            >
+                                <HBox>
+                                    <Label
+                                        text="Product"
+                                        design="Bold"
+                                    />
+                                </HBox>
+
+                                <HBox>
+                                    <VBox>
+                                        <Button
+                                            text="Add row"
+                                            icon="sap-icon://add"
+                                            type="Emphasized"
+                                            press=".onAddNewRow"
+                                        />
+                                    </VBox>
+                                    <Button
+                                        text="Delete row"
+                                        icon="sap-icon://delete"
+                                        type="Reject"
+                                        press=".onDeleteRows"
+                                        class="sapUiSmallMarginBegin"
+                                    />
+                                </HBox>
+                            </HBox>
+                        </OverflowToolbar>
+                    </table:extension>
                     <table:columns>
-                        <table:Column width='11rem'>
+                        <table:Column width='10rem'>
                             <Label text="Mã pr" />
                             <table:template>
                                 <Text text="{maPR}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column
+                            width='5rem'
+                            hAlign="Center"
+                        >
                             <Label text="DeleteID" />
                             <table:template>
                                 <Text text="{DeleteID}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column
+                            width='5rem'
+                            hAlign="Center"
+                        >
                             <Label text="Số Lượng" />
                             <table:template>
                                 <Text text="{soLuong}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column width='10rem'>
                             <Label text="Nhà Máy" />
                             <table:template>
                                 <Text text="{nhaMay}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column width='10rem'>
                             <Label text="Mã PO" />
                             <table:template>
                                 <Text text="{maPO}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column
+                            width='8rem'
+                            hAlign="Center"
+                        >
                             <Label text="Detalis" />
                             <table:template>
-                                <Button text="{Detalis}" />
+                                <Button
+                                    text="Detalis"
+                                    press="handleDetailsPress"
+                                />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column width='18rem'>
                             <Label text="Ngày cập nhật" />
                             <table:template>
-                                <Text text="{NgayCapNhat}" />
+                                <DatePicker
+                                    value="{
+                            path: 'NgayCapNhat',
+                            type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            
+                            }"
+                                />
+                            </table:template>
+                        </table:Column>
+                        <table:Column
+                            width='4rem'
+                            hAlign="Center"
+                        >
+                            <table:template>
+                                <Button
+                                    icon="sap-icon://decline"
+                                    press=".onDeleteRow"
+                                    type="Transparent"
+                                />
                             </table:template>
                         </table:Column>
                     </table:columns>

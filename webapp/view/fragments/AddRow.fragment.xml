@@ -1,0 +1,140 @@
+<core:FragmentDefinition
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:unified="sap.ui.unified"
+
+>
+    <Dialog
+        id="addRow"
+        title="Add row"
+        afterClose="onAfterCloseDialog"
+        contentWidth="500px"
+    >
+        <content>
+            <form:SimpleForm
+                id="dialogContent"
+                editable="true"
+            >
+                <Label text="ID" />
+                    <Input
+                        required="true"
+                        value="{form>Employeeid}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="Full Name" />
+                    <Input
+                        required="true"
+                        value="{form>Fullname}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="Gender" />
+                    <Input
+                        required="true"
+                        value="{form>Gender}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="StartDate" />
+                    <DatePicker
+                        required="true"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                        placeholder="enter"
+                        value="{
+                                path: 'form>StartDate',
+                                type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            }"
+                    />
+                    <Label text="Contracttype" />
+                    <Input
+                        required="true"
+                        value="{form>Contracttype}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="Birthdate" />
+                    <DatePicker
+                        required="true"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                        placeholder="enter"
+                        value="{
+                                path: 'form>Birthdate',
+                                type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            }"
+                    />
+                    <Label text="Address" />
+                    <Input
+                        required="true"
+                        value="{form>Address}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                
+                    <Label text="Phone" />
+                    <Input required="true"
+                        value="{form>Phone}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="Plans" />
+                    <Input
+                        required="true"
+                        value="{form>Plans}"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                    />
+                    <Label text="Salary" />
+                    <Input
+                        required="true"
+                        value="{
+                           parts: [
+                                'form>Salary',
+                                'view>/currency'
+                            ],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {
+                                showMeasure: false,
+                                decimalSeparator: ',',
+                                groupingSeparator: '.'
+                            }
+                        }"
+                        change="onChangeValue"
+                        fieldGroupIds="FormField"
+                        description="VND"
+                    />
+
+                    <Label text="Upload File" />
+                <unified:FileUploader
+                    id="fileUploader"
+                    value="{form>File}"
+                    />
+                
+                <Label /> <!-- Cung cấp khoảng trắng giữa các controls -->
+                <Button
+                    text="Upload File"
+                    press="handleUploadPress" />
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                text="Save"
+                press=".onSavePR"
+                icon="sap-icon://save"
+                type="Emphasized"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press=".onCloseDialogAddPR"
+                type="Reject"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

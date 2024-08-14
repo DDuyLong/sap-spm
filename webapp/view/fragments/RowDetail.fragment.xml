@@ -1,0 +1,95 @@
+<core:FragmentDefinition
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="addRow"
+        title="detail row"
+        afterClose="onAfterCloseDialog"
+        contentWidth="500px"
+    >
+        <content>
+            <form:SimpleForm
+                id="dialogContent"
+                editable="true"
+            >
+                <Label text="Mã PR" />
+                <Input
+                    id="inputPR"
+                    placeholder="Mã PR"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{DataPR>Employeeid}"
+                    editable="false"
+                />
+                <Label text="Delete ID" />
+                <Select
+                    id="DeleteID"
+                    width="100%"
+                    items="{
+                        path: 'selectID>/DeleteID',
+                        sorter: { path: 'name' }
+                    }"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    selectedKey="{DataPR>Fullname}"
+                    editable="false"
+                >
+                    <core:Item
+                        key="{selectID>key}"
+                        text="{selectID>value}"
+                    />
+                </Select>
+
+                <Label text="Số lượng" />
+                <Input
+                    id="inputSl"
+                    placeholder="số lượng"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{DataPR>Gender}"
+                    editable="false"
+                />
+                <Label text="Nhà máy" />
+                <Input
+                    id="inputnhaMay"
+                    placeholder="Nha máy"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{DataPR>Phone}"
+                    editable="false"
+                />
+                <Label text="Mã PO" />
+                <Input
+                    id="inputMaPO"
+                    placeholder="Mã PO"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{DataPR>Plans}"
+                    editable="false"
+                />
+                <Label text="Ngày cập nhật" />
+                <DatePicker
+                    id="ngayCapNhat"
+                    placeholder="ngày cập nhật"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{DataPR>Salary}"
+                    editable="false"
+                />
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                text="Close"
+                press=".oncloseDetailPR"
+            />
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,5 +1,7 @@
-<mvc:View controllerName="spm.controller.Main"
-     xmlns:core="sap.ui.core"
+<mvc:View
+    xmlns:unified="sap.ui.unified"
+    controllerName="spm.controller.Main"
+    xmlns:core="sap.ui.core"
     xmlns:filterbar="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -7,8 +9,9 @@
     xmlns:tnt="sap.tnt"
     xmlns:f='sap.f'
     xmlns:table='sap.ui.table'
-    xmlns:svm="sap.ui.comp.smartvariants">
-  <Page id="page">
+    xmlns:svm="sap.ui.comp.smartvariants"
+>
+    <Page id="page">
         <customHeader>
             <f:ShellBar
                 title="Tổng Quan"
@@ -108,19 +111,28 @@
             </VBox>
         </content>
         <f:DynamicPage headerExpanded="{/headerExpanded}">
-           <f:title>
-				<f:DynamicPageTitle>
-					<f:heading>
-						<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
-					</f:heading>
-					<f:expandedContent>
-						<Label id="expandedLabel" text="No filters active" />
-					</f:expandedContent>
-					<f:snappedContent>
-						<Label id="snappedLabel" text="No filters actives" />
-					</f:snappedContent>
-				</f:DynamicPageTitle>
-			</f:title>
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <svm:SmartVariantManagement
+                            id="svm"
+                            showExecuteOnSelection="true"
+                        />
+                    </f:heading>
+                    <f:expandedContent>
+                        <Label
+                            id="expandedLabel"
+                            text="No filters active"
+                        />
+                    </f:expandedContent>
+                    <f:snappedContent>
+                        <Label
+                            id="snappedLabel"
+                            text="No filters actives"
+                        />
+                    </f:snappedContent>
+                </f:DynamicPageTitle>
+            </f:title>
             <f:header>
                 <f:DynamicPageHeader>
                     <f:content>
@@ -182,11 +194,11 @@
                                         <MultiComboBox
                                             name="DeleteID"
                                             selectionChange=".onChangeSelect"
-                                            items="{/select}"
+                                            items="{selectID>/DeleteID}"
                                         >
                                             <core:Item
-                                                key="{key}"
-                                                text="{name}"
+                                                key="{selectID>key}"
+                                                text="{selectID>value}"
                                             />
                                         </MultiComboBox>
                                     </filterbar:control>
@@ -199,53 +211,155 @@
             <f:content>
                 <table:Table
                     selectionMode="MultiToggle"
-                    rows="{/dataTable}"
+                    rows="{DataPR>/PR}"
                     id="table"
+                    rowActionCount="2"
+                    rowSelectionChange="onRowSelectionChange"
                 >
+                    <table:extension>
+                        <OverflowToolbar class="sapMTBHeader-CTX">
+                            <Title
+                                id="title"
+                                text="PR"
+                            />
+                            <ToolbarSpacer />
+                            <Button
+                                text="Add row"
+                                icon="sap-icon://add"
+                                type="Emphasized"
+                                press=".onOpenAddPR"
+                            />
+                            <Button
+                                text="Delete row"
+                                icon="sap-icon://delete"
+                                type="Reject"
+                                press=".onDeletePRs"
+                            />
+                        </OverflowToolbar>
+                    </table:extension>
                     <table:columns>
-                        <table:Column width='11rem'>
-                            <Label text="Mã pr" />
+                        <table:Column>
+                            <Label text="Employeeid" />
                             <table:template>
-                                <Text text="{maPR}" />
+                                <Text text="{DataPR>Employeeid}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="DeleteID" />
+                        <table:Column>
+                            <Label text="Fullname" />
                             <table:template>
-                                <Text text="{DeleteID}" />
+                                <Text text="{DataPR>Fullname}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Số Lượng" />
+                        <table:Column>
+                            <Label text="Gender" />
                             <table:template>
-                                <Text text="{soLuong}" />
+                                <Text text="{DataPR>Gender}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Nhà Máy" />
+                        <table:Column>
+                            <Label text="StartDate" />
                             <table:template>
-                                <Text text="{nhaMay}" />
+                                <DatePicker
+                                    value="{
+                                path: 'DataPR>StartDate',
+                                type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            }"
+                                />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Mã PO" />
+                        <table:Column>
+                            <Label text="Contracttype" />
                             <table:template>
-                                <Text text="{maPO}" />
+                                <Text text="{DataPR>Contracttype}" />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column>
+                            <Label text="Birthdate" />
+                            <table:template>
+                                <DatePicker
+                                    enabled="false"
+                                    value="{
+                                path: 'DataPR>Birthdate',
+                                type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            }"
+                                />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Address" />
+                            <table:template>
+                                <Text text="{DataPR>Address}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Phone" />
+                            <table:template>
+                                <Text text="{DataPR>Phone}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Plans" />
+                            <table:template>
+                                <Text text="{DataPR>Plans}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
+                            <Label text="Salary" />
+                            <table:template>
+                                <Text text="{DataPR>Salary}" />
+                            </table:template>
+                        </table:Column>
+                        <table:Column>
                             <Label text="Detalis" />
                             <table:template>
-                                <Button text="{Detalis}" />
+                                <ObjectIdentifier
+                                    title="Detalis"
+                                    titleActive="true"
+                                    titlePress="onOpenDetail"
+                                />
                             </table:template>
                         </table:Column>
-                        <table:Column width='11rem'>
+                        <table:Column>
+                        <Label text="Files" />
+                        <table:template>
+                            <Link
+                                text="{DataPR>File}"
+                                press="onOpenFile"
+                            />
+                        </table:template>
+                    </table:Column>
+                        <!-- <table:Column>
                             <Label text="Ngày cập nhật" />
                             <table:template>
-                                <Text text="{NgayCapNhat}" />
+                                <DatePicker
+                                enabled="false"
+                                
+                                    value="{
+                                path: 'DataPR>Birthdate',
+                                type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'dd.MM.yyyy'}, pattern: 'dd.MM.yyyy'}
+                            }"
+                                />
                             </table:template>
-                        </table:Column>
+                        </table:Column> -->
                     </table:columns>
+                    <table:rowActionTemplate>
+                        <table:RowAction>
+                            <table:RowActionItem
+                                type="Custom"
+                                text="Edit"
+                                icon="sap-icon://edit"
+                                press=".onEditPR"
+                            />
+                            <table:RowActionItem
+                                type="Delete"
+                                icon="sap-icon://delete"
+                                press=".onDeletePR"
+                            />
+                        </table:RowAction>
+                    </table:rowActionTemplate>
                 </table:Table>
             </f:content>
         </f:DynamicPage>

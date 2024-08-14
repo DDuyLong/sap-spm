@@ -1,0 +1,99 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="edit-product-dialog"
+        title="Edit Product"
+        afterClose="onAfterCloseDialog"
+        contentWidth="400px"
+    >
+        <content>
+            <form:SimpleForm
+                id=""
+                editable="true"
+            >
+                <Label text="Mã PR" />
+                <Input
+                    id="inputPR"
+                    placeholder="Mã PR"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{form>maPR}"
+                />
+                <Label text="Delete ID" />
+                <Select
+                    id="DeleteID"
+                    width="100%"
+                    items="{
+                        path: 'selectID>/DeleteID',
+                        sorter: { path: 'name' }
+                    }"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    selectedKey="{form>DeleteID}"
+                >
+                    <core:Item
+                        key="{selectID>key}"
+                        text="{selectID>value}"
+                    />
+                </Select>
+
+                <Label text="Số lượng" />
+                <Input
+                    id="inputSl"
+                    placeholder="số lượng"
+                    type="Number"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{form>soLuong}"
+                />
+                <Label text="Nhà máy" />
+                <Input
+                    id="inputnhaMay"
+                    placeholder="Nha máy"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{form>nhaMay}"
+                />
+                <Label text="Mã PO" />
+                <Input
+                    id="inputMaPO"
+                    placeholder="Mã PO"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{form>maPO}"
+                />
+                <Label text="Ngày cập nhật" />
+                <DatePicker
+                    id="ngayCapNhat"
+                    placeholder="ngày cập nhật"
+                    required="true"
+                    fieldGroupIds="FormField"
+                    change="onChangeValue"
+                    value="{form>NgayCapNhat}"
+                />
+            </form:SimpleForm>
+        </content>
+         <beginButton>
+            <Button
+                text="Save"
+                press=".onSaveEditPR"
+                icon="sap-icon://save"
+                type="Emphasized"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press=".onCloseDialogEditPR"
+                type="Reject"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -18,7 +18,7 @@ export interface Fiter {
 export interface DataFilter {
   groupName: string;
   fieldName: string;
-  fieldData: string | string[] ;
+  fieldData: string | string[];
 }
 
 export interface DateFilterValue {
@@ -26,4 +26,39 @@ export interface DateFilterValue {
   filterItem: Dict;
 }
 
-// export interface
+export interface DataTable {
+  maPR: string;
+  DeleteID: string | undefined;
+  soLuong: string;
+  nhaMay: string;
+  maPO: string;
+  NgayCapNhat: string;
+}
+
+export interface DeleteID {
+  key: number;
+  value: string;
+}
+
+export interface Data {
+  tableData: DataTable[];
+  deleteID: DeleteID;
+}
+
+export interface ODataSuccessResponse<T = any> {
+  results: T[];
+}
+
+export interface Employee {
+  Employeeid: string;
+  Fullname: string;
+  Gender: string;
+  StartDate: string;
+  Contracttype: string;
+  Birthdate: string;
+  Address: string;
+  Phone: string;
+  Plans: string;
+  Salary: number;
+  File: string
+}

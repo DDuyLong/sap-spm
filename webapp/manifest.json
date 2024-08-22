@@ -81,7 +81,16 @@
           "name": "RouteMain",
           "pattern": ":?query:",
           "target": ["TargetMain"]
+        
+        },
+        {
+          "name": "PRDetail",
+          "pattern": "PRDetail:",
+          "target": "PRDetail"
+        
         }
+        
+       
       ],
       "targets": {
         "TargetMain": {
@@ -89,8 +98,17 @@
           "transition": "slide",
           "clearControlAggregation": false,
           "viewId": "Main",
-          "viewName": "Main"
-        }
+          "viewName": "Main",
+          "viewLevel": 1
+        },
+        "PRDetail": {
+          "viewName": "PRDetail",
+          "viewId": "PRDetail",
+          "controlAggregation": "pages",
+          "transition": "slide",
+          "viewType": "XML",
+          "viewLevel": 2
+          }
       }
     },
     "rootView": {

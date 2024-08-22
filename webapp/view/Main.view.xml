@@ -1,5 +1,6 @@
-<mvc:View controllerName="spm.controller.Main"
-     xmlns:core="sap.ui.core"
+<mvc:View
+    controllerName="spm.controller.Main"
+    xmlns:core="sap.ui.core"
     xmlns:filterbar="sap.ui.comp.filterbar"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
@@ -7,8 +8,9 @@
     xmlns:tnt="sap.tnt"
     xmlns:f='sap.f'
     xmlns:table='sap.ui.table'
-    xmlns:svm="sap.ui.comp.smartvariants">
-  <Page id="page">
+    xmlns:commons="sap.suite.ui.commons"
+>
+    <Page id="page">
         <customHeader>
             <f:ShellBar
                 title="Tổng Quan"
@@ -60,194 +62,159 @@
             </IconTabHeader>
         </tnt:ToolHeader>
         <content>
-            <VBox>
-                <HBox>
-                    <GenericTile
-                        class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                        header="PR"
-                        subheader="Mới đồng bộ"
-                        press="press"
-                        width="300px"
-                    >
-                        <TileContent
-                            unit="Now"
-                            footer="Footer"
-                        >
-                            <NumericContent
-                                value="65.5%"
-                                icon="sap-icon://line-charts"
-                                withMargin="false"
-                                valueColor="Good"
-                            />
-                        </TileContent>
-                    </GenericTile>
+            <IconTabBar class="sapUiSmallMarginTop">
+                <items>
+                    <IconTabFilter
+                        design="Horizontal"
+                        icon="sap-icon://group"
+                        key="people"
+                        count="53 of 132"
+                        text="Nhà cung cấp hiện hữu"
+                    />
+                    <IconTabFilter
+                        design="Horizontal"
+                        icon="sap-icon://group"
+                        key="people"
+                        count="53 of 132"
+                        text="Nhà cung cấp mới"
+                    />
+                </items>
+            </IconTabBar>
+            <Table
+                items="{table>/rows}"
+                class="sapFDynamicPageAlignContent"
+                busy="false"
+                mode="MultiSelect"
+                itemPress="onListItemPress"
 
-                    <GenericTile
-                        class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-                        header="PR"
-                        subheader="Đã hủy"
-                        press="press"
-                        width="300px"
+            >
+                <headerToolbar>
+                    <OverflowToolbar class="sapMTBHeader-CTX">
+                        <Label
+                            design="Bold"
+                            text="Danh sách nhà cung cấp hiện hữu"
+                        />
+                        <ToolbarSpacer />
+
+                        <SearchField
+                            width="200px"
+                            placeholder="search"
+                        />
+                        <Button
+                            text="Kich hoạt"
+                            type="Emphasized"
+                        />
+                        <Button
+                            text="vô hiệu hóa"
+                            type="Reject"
+                        />
+                        <ToolbarSeparator />
+                        <OverflowToolbarButton
+                            icon="sap-icon://action-settings"
+                            id="enterSettingBtn"
+                            press="handleSetting"
+                        />
+                        <ToolbarSeparator />
+
+                        <OverflowToolbarButton
+                            icon="sap-icon://excel-attachment"
+                            id="enterAttachmentBtn"
+                            press="handleAttachment"
+                        />
+                        <ToolbarSeparator />
+                        <OverflowToolbarButton
+                            icon="sap-icon://full-screen"
+                            press="handleFullScreen"
+                            id="enterFullScreenBtn"
+                            visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column >
+                        <Text text="Thông tin"   />
+                    </Column>
+                    <Column width="8rem">
+                        <Text text="Công ty" />
+                    </Column>
+                    <Column>
+                        <Text text="Cập nhật đăng ký" />
+                    </Column>
+                    <Column>
+                        <Text text="Đánh giá đơn hàng" />
+                    </Column>
+                    <Column
+                        hAlign="End"
+                        width="8rem"
                     >
-                        <TileContent
-                            unit="Now"
-                            visible="true"
-                            footer="Footer"
-                        >
-                            <NumericContent
-                                value="65.5%"
-                                icon="sap-icon://line-charts"
-                                withMargin="false"
-                                valueColor="Good"
+                        <Text text="Điểm năng lực" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="Địa chỉ" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" >
+                        <cells>
+                            <VBox>
+                                <Link text="{table>thongTin/id}" />
+                                <HBox>
+                                    <Text text="Trạng thái: " />
+
+                                    <Text text="{table>thongTin/trangThai}" />
+                                    <customData>
+                                        <core:CustomData
+                                            key="color"
+                                            value="{= ${table>thongTin/trangThai} === 'vô hiệu hóa' ? 'red' : 'green'}"
+                                        />
+                                    </customData>
+                                </HBox>
+                                <Text
+                                    text="Lượt cung ứng: {table>thongTin/luotCungUng}"
+                                />
+
+                                <Text
+                                    text="Ngày cập nhật đăng ký: {table>thongTin/NgayCapNhatDangKy}"
+                                />
+                            </VBox>
+                        </cells>
+                        <cells>
+                            <ObjectIdentifier text="{table>congTy}" />
+                        </cells>
+                        <cells>
+                            <commons:MicroProcessFlow>
+                                <commons:content>
+                                    <commons:MicroProcessFlowItem
+                                        state="{table>capNhatDangKy}"
+                                    />
+                                    <commons:MicroProcessFlowItem
+                                        state="Success"
+                                    />
+                                    <commons:MicroProcessFlowItem
+                                        state="{table>capNhatDangKy}"
+                                    />
+                                </commons:content>
+                            </commons:MicroProcessFlow>
+                        </cells>
+                        <cells>
+                            <RatingIndicator
+                                id="RI_default"
+                                maxValue="5"
+                                class="sapUiSmallMarginBottom"
+                                value="{table>danhGiaDonHang}"
                             />
-                        </TileContent>
-                    </GenericTile>
-                </HBox>
-                <ToolbarSpacer />
-                <Label text="Danh sách PR" />
-            </VBox>
+                        </cells>
+                        <cells>
+                            <ObjectIdentifier text="{table>diemNangLuc}" />
+                        </cells>
+                        <cells>
+                            <ObjectIdentifier text="{table>diaChi}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            
         </content>
-        <f:DynamicPage headerExpanded="{/headerExpanded}">
-           <f:title>
-				<f:DynamicPageTitle>
-					<f:heading>
-						<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
-					</f:heading>
-					<f:expandedContent>
-						<Label id="expandedLabel" text="No filters active" />
-					</f:expandedContent>
-					<f:snappedContent>
-						<Label id="snappedLabel" text="No filters actives" />
-					</f:snappedContent>
-				</f:DynamicPageTitle>
-			</f:title>
-            <f:header>
-                <f:DynamicPageHeader>
-                    <f:content>
-                        <filterbar:FilterBar
-                            id="filterbar"
-                            persistencyKey="myPersKey"
-                            useToolbar="false"
-                            search=".onSearch"
-                            filterChange=".onFilterChange"
-                            afterVariantLoad=".onAfterVariantLoad"
-                        >
-                            <filterbar:filterGroupItems>
-                                <filterbar:FilterGroupItem
-                                    name="startDate"
-                                    label="Từ ngày"
-                                    groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
-                                    <filterbar:control>
-                                        <DatePicker
-                                            id="startDate"
-                                            placeholder="startDate"
-                                            change=".onChangeSelect"
-                                        />
-                                    </filterbar:control>
-                                </filterbar:FilterGroupItem>
-                                <filterbar:FilterGroupItem
-                                    name="endDate"
-                                    label="Đến ngày"
-                                    groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
-                                    <filterbar:control>
-                                        <DatePicker
-                                            id="endDate"
-                                            placeholder="endDate"
-                                            change="onChangeSelect"
-                                        />
-                                    </filterbar:control>
-                                </filterbar:FilterGroupItem>
-
-                                <filterbar:FilterGroupItem
-                                    name="search"
-                                    groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
-                                    <filterbar:control>
-                                        <SearchField change=".onChangeSelect" />
-                                    </filterbar:control>
-                                </filterbar:FilterGroupItem>
-
-                                <filterbar:FilterGroupItem
-                                    name="DeleteId"
-                                    label="DeleteId"
-                                    groupName="Group1"
-                                    visibleInFilterBar="true"
-                                >
-                                    <filterbar:control>
-                                        <MultiComboBox
-                                            name="DeleteID"
-                                            selectionChange=".onChangeSelect"
-                                            items="{/select}"
-                                        >
-                                            <core:Item
-                                                key="{key}"
-                                                text="{name}"
-                                            />
-                                        </MultiComboBox>
-                                    </filterbar:control>
-                                </filterbar:FilterGroupItem>
-                            </filterbar:filterGroupItems>
-                        </filterbar:FilterBar>
-                    </f:content>
-                </f:DynamicPageHeader>
-            </f:header>
-            <f:content>
-                <table:Table
-                    selectionMode="MultiToggle"
-                    rows="{/dataTable}"
-                    id="table"
-                >
-                    <table:columns>
-                        <table:Column width='11rem'>
-                            <Label text="Mã pr" />
-                            <table:template>
-                                <Text text="{maPR}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="DeleteID" />
-                            <table:template>
-                                <Text text="{DeleteID}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Số Lượng" />
-                            <table:template>
-                                <Text text="{soLuong}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Nhà Máy" />
-                            <table:template>
-                                <Text text="{nhaMay}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Mã PO" />
-                            <table:template>
-                                <Text text="{maPO}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Detalis" />
-                            <table:template>
-                                <Button text="{Detalis}" />
-                            </table:template>
-                        </table:Column>
-                        <table:Column width='11rem'>
-                            <Label text="Ngày cập nhật" />
-                            <table:template>
-                                <Text text="{NgayCapNhat}" />
-                            </table:template>
-                        </table:Column>
-                    </table:columns>
-                </table:Table>
-            </f:content>
-        </f:DynamicPage>
+        
     </Page>
 </mvc:View>

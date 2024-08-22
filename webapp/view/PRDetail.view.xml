@@ -1,0 +1,209 @@
+<mvc:View
+    xmlns:upload="sap.m.upload"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:uxap="sap.uxap"
+    controllerName="spm.controller.PRDetail"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
+    xmlns:f='sap.f'
+    xmlns:table='sap.ui.table'
+>
+    <uxap:ObjectPageLayout>
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <VBox>
+                        <Title text="Công ty abc" />
+                        <HBox>
+                            <Label text="Mã nhà cung cấp" />
+                            <Text text="102121212112" />
+                        </HBox>
+                    </VBox>
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <FlexBox>
+                        <FlexBox>
+                            <Title text="Công ty abc" />
+                        </FlexBox>
+                    </FlexBox>
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:headerContent>
+            <FlexBox>
+                <Avatar />
+                <VBox>
+                    <Title text="Thông tin chung" />
+                    <Label text="Người đại diện" />
+                    <Text text="abc" />
+                    <Label text="Địa chỉ" />
+                    <Text text="cab" />
+                    <Label text="Thời gian thành lập" />
+                    <Text text="12/09/2022" />
+                    <Label text="Mã số thuế" />
+                    <Text text="1111110100101" />
+                </VBox>
+                <VBox>
+                    <Title text="Thông tin liên hệ" />
+                    <Label text="Số điện thoại" />
+                    <Text text="0923213412" />
+                    <Label text="Email" />
+                    <Text text="thanhvinh@gmail.com" />
+                    <Label text="Website" />
+                    <Text text="thanhvinh.com" />
+                </VBox>
+                <VBox>
+                    <Title text="đánh giá đơn hàng" />
+                    <Text text="6 review" />
+                    <RatingIndicator
+                        id="RI_default"
+                        maxValue="5"
+                        class="sapUiSmallMarginBottom"
+                        value="2"
+                    />
+                </VBox>
+                <VBox>
+                    <Title text="Số lượng mua" />
+                    <HBox>
+                        <core:Icon src="sap-icon://cart-approval" />
+                        <Text text="12 đơn" />
+                    </HBox>
+                </VBox>
+            </FlexBox>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection title="Thông tin đăng ký">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <form:SimpleForm
+                                maxContainerCols="2"
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanL="12"
+                                labelSpanM="12"
+                                emptySpanL="0"
+                                emptySpanM="0"
+                                columnsL="1"
+                                columnsM="1"
+                            >
+                                <form:content>
+                                    <VBox>
+                                        <Title text="Thông tin đăng ký" />
+                                        <Label text="Tên công ty" />
+                                        <Text text="Công ty abc" />
+                                        <Label text="Thời gian thành lập" />
+                                        <Text text="18/8/2024" />
+                                        <Label text="Đăng ký kinh doanh" />
+                                        <Text text="" />
+                                    </VBox>
+                                    <VBox>
+                                        <Title text="Configuration Accounts" />
+                                        <Label text="Model" />
+                                        <Text text="Robot Arm Series 9" />
+                                        <Label text="Description" />
+                                        <Text text="White(default)" />
+                                    </VBox>
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <Page>
+                                <upload:UploadSet
+                                    id="UploadSet"
+                                    instantUpload="true"
+                                    showIcons="true"
+                                    uploadEnabled="true"
+                                    terminationEnabled="true"
+                                    fileTypes="txt,doc,png"
+                                    maxFileNameLength="30"
+                                    maxFileSize="200"
+                                    mediaTypes="text/plain,application/msword,image/png"
+                                    uploadUrl=""
+                                    items="4"
+                                    mode="MultiSelect"
+                                    selectionChanged="onSelectionChange"
+                                    directory="true"
+                                >
+                                    <upload:toolbar>
+                                        <OverflowToolbar>
+                                            <ToolbarSpacer />
+
+                                            <SegmentedButton>
+                                                <items>
+                                                    <SegmentedButtonItem
+                                                        text="tất cả"
+                                                    />
+                                                    <SegmentedButtonItem
+                                                        text="Hợp đồng khởi tạo"
+                                                    />
+                                                    <SegmentedButtonItem
+                                                        text="Hợp đồng sửa đổi"
+                                                    />
+                                                    <SegmentedButtonItem
+                                                        text="Hợp đồng cuối"
+                                                    />
+                                                </items>
+                                            </SegmentedButton>
+                                        </OverflowToolbar>
+                                    </upload:toolbar>
+                                    <upload:items>
+                                        <upload:UploadSetItem
+                                            fileName="{fileName}"
+                                            mediaType="{mediaType}"
+                                        />
+                                    </upload:items>
+                                </upload:UploadSet>
+                            </Page>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="Lịch sử cung ứng">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <form:SimpleForm
+                                maxContainerCols="2"
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanL="12"
+                                labelSpanM="12"
+                                emptySpanL="0"
+                                emptySpanM="0"
+                                columnsL="1"
+                                columnsM="1"
+                            >
+                                <form:content>
+                                    <VBox>
+                                        <Title text="Thông tin đăng ký" />
+                                        <Label text="Tên công ty" />
+                                        <Text text="Công ty abc" />
+                                        <Label text="Thời gian thành lập" />
+                                        <Text text="18/8/2024" />
+                                        <Label text="Đăng ký kinh doanh" />
+                                        <Text text="" />
+                                    </VBox>
+                                    <VBox>
+                                        <Title text="Configuration Accounts" />
+                                        <Label text="Model" />
+                                        <Text text="Robot Arm Series 9" />
+                                        <Label text="Description" />
+                                        <Text text="White(default)" />
+                                    </VBox>
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
+</mvc:View>
